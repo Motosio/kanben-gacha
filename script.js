@@ -113,13 +113,14 @@ function showResults(results) {
   results.forEach((char, index) => {
     setTimeout(() => {
       const el = document.createElement("div");
+      el.className = "result-card";
       el.innerHTML = `
         <img src="${char.img}" alt="">
-        <p>${char.name} (${char.rarity})</p>
         <p class="subtitle">${char.title}</p>
+        <p class="name">${char.name}</p>
       `;
       resultDiv.appendChild(el);
-    }, index * 1000);
+    }, index * 500);
   });
 }
 
