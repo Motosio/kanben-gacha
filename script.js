@@ -109,14 +109,17 @@ function rollCharacter(rarityNum) {
 function showResults(results) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
-  results.forEach((char) => {
-    const el = document.createElement("div");
-    el.innerHTML = `
-      <img src="${char.img}" alt="${char.name}">
-      <p>${char.name} (${char.rarity})</p>
-      <p class="subtitle">${char.title}</p>
-    `;
-    resultDiv.appendChild(el);
+
+  results.forEach((char, index) => {
+    setTimeout(() => {
+      const el = document.createElement("div");
+      el.innerHTML = `
+        <img src="${char.img}" alt="">
+        <p>${char.name} (${char.rarity})</p>
+        <p class="subtitle">${char.title}</p>
+      `;
+      resultDiv.appendChild(el);
+    }, index * 500);
   });
 }
 
