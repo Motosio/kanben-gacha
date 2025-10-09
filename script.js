@@ -1,63 +1,111 @@
-const SHEET_URL =
-  "characters.csv";
-
+const SHEET_URL = "characters.csv";
 let characters = [];
+let selectedPUCharacter = null;
 
+// CSV読み込みと初期化
 fetch(SHEET_URL)
   .then(res => res.text())
   .then(text => {
     const rows = text.trim().split("\n").map(r => r.split(","));
-    rows.shift(); // 1段目（ヘッダー）削除
+    rows.shift(); // ヘッダー削除
 
-    // スプレッドシート構成に合わせてマッピング
     characters = rows.map(r => {
-      const rarityNum = Number(r[4]); // E列
-      let rarity;
-      if (rarityNum === 5) rarity = "SSR";
-      else if (rarityNum === 4) rarity = "SR";
-      else rarity = "R";
-
+      const rarityNum = Number(r[4]);
       return {
-        name: r[0], // A列
-        category: r[1], // B列
-        subcategory: r[2], // C列
-        rarity: rarity, // E列変換後
-        title: r[5], // F列（二つ名）
+        name: r[0],
+        category: r[1],
+        subcategory: r[2],
+        rarity: rarityNum === 5 ? "SSR" : rarityNum === 4 ? "SR" : "R",
+        rarityNum: rarityNum,
+        title: r[5],
         img: `img/${r[0]}.png`,
       };
     });
 
-    console.log("Loaded:", characters);
-
+    setupSelectors();
     document.getElementById("gacha-single").onclick = () => draw(1);
     document.getElementById("gacha-ten").onclick = () => draw(10);
   })
   .catch((err) => console.error("CSV読み込み失敗:", err));
 
+// PU選択UIの初期化
+function setupSelectors() {
+  const categorySelect = document.getElementById("category");
+  const subcategorySelect = document.getElementById("subcategory");
+  const characterSelect = document.getElementById("character");
+
+  const categories = [...new Set(characters.map(c => c.category))];
+  categories.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.textContent = cat;
+    categorySelect.appendChild(opt);
+  });
+
+  categorySelect.onchange = () => {
+    subcategorySelect.innerHTML = '<option value="">選択してください</option>';
+    characterSelect.innerHTML = '<option value="">選択してください</option>';
+    const subs = [...new Set(characters.filter(c => c.category === categorySelect.value).map(c => c.subcategory))];
+    subs.forEach(sub => {
+      const opt = document.createElement("option");
+      opt.value = sub;
+      opt.textContent = sub;
+      subcategorySelect.appendChild(opt);
+    });
+  };
+
+  subcategorySelect.onchange = () => {
+    characterSelect.innerHTML = '<option value="">選択してください</option>';
+    const chars = characters.filter(c =>
+      c.category === categorySelect.value &&
+      c.subcategory === subcategorySelect.value
+    );
+    chars.forEach(ch => {
+      const opt = document.createElement("option");
+      opt.value = ch.name;
+      opt.textContent = ch.name;
+      characterSelect.appendChild(opt);
+    });
+  };
+
+  characterSelect.onchange = () => {
+    selectedPUCharacter = characterSelect.value;
+    console.log("PUキャラ:", selectedPUCharacter);
+  };
+}
+
+// ガチャ実行
 function draw(count = 1) {
   const results = [];
   for (let i = 0; i < count; i++) {
-    const char = pickCharacter();
+    const rarity = rollRarity();
+    const char = rollCharacter(rarity);
     if (char) results.push(char);
   }
   showResults(results);
+  showEffect(results);
 }
 
-function pickCharacter() {
-  if (characters.length === 0) return null;
-
-  const r = Math.random();
-  let rarity;
-  if (r < 0.03) rarity = "SSR";
-  else if (r < 0.18) rarity = "SR";
-  else rarity = "R";
-
-  const pool = characters.filter((c) => c.rarity === rarity);
-  if (pool.length === 0)
-    return characters[Math.floor(Math.random() * characters.length)];
-  return pool[Math.floor(Math.random() * pool.length)];
+// レアリティ抽選
+function rollRarity() {
+  return Math.random() < 0.05 ? 5 : 4;
 }
 
+// キャラ抽選（PU補正あり）
+function rollCharacter(rarityNum) {
+  const pool = characters.filter(c => c.rarityNum === rarityNum);
+  if (pool.length === 0) return null;
+
+  const puChar = pool.find(c => c.name === selectedPUCharacter);
+  const puRate = rarityNum === 5 ? 0.5 : 0.1;
+
+  if (puChar && Math.random() < puRate) return puChar;
+
+  const nonPU = pool.filter(c => c.name !== selectedPUCharacter);
+  return nonPU[Math.floor(Math.random() * nonPU.length)];
+}
+
+// 結果表示
 function showResults(results) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
@@ -70,4 +118,22 @@ function showResults(results) {
     `;
     resultDiv.appendChild(el);
   });
+}
+
+// 演出表示
+function showEffect(results) {
+  const effectDiv = document.getElementById("effect");
+  const hasSSR = results.some(c => c.rarityNum === 5);
+  const hasPU = results.some(c => c.name === selectedPUCharacter);
+
+  let effectClass = "effect-blue";
+  if (hasPU) effectClass = "effect-platinum";
+  else if (hasSSR) effectClass = "effect-gold";
+
+effectDiv.className = effectClass;
+  effectDiv.textContent = {
+    "effect-blue": "青演出（星4のみ）",
+    "effect-gold": "金演出（星5あり）",
+    "effect-platinum": "プラチナ演出（PUキャラあり）"
+  }[effectClass];
 }
