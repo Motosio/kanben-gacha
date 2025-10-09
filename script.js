@@ -97,7 +97,7 @@ function rollCharacter(rarityNum) {
   if (pool.length === 0) return null;
 
   const puChar = pool.find(c => c.name === selectedPUCharacter);
-  const puRate = rarityNum === 5 ? 0.5 : 0.1;
+  const puRate = rarityNum === 5 ? 0.5 : 0.03;
 
   if (puChar && Math.random() < puRate) return puChar;
 
