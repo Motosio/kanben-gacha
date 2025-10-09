@@ -119,7 +119,7 @@ function showResults(results) {
         <p class="subtitle">${char.title}</p>
       `;
       resultDiv.appendChild(el);
-    }, index * 500);
+    }, index * 1000);
   });
 }
 
