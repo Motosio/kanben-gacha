@@ -24,3 +24,34 @@ button {
   0% { transform: scale(0.5); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* 🎬 演出スタイル */
+#effect {
+  margin: 20px auto;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  transition: background 0.5s ease;
+}
+
+/* 青演出（星4のみ） */
+.effect-blue {
+  background: linear-gradient(to right, #3498db, #2c3e50);
+  color: #ecf0f1;
+}
+
+/* 金演出（星5あり） */
+.effect-gold {
+  background: linear-gradient(to right, #f1c40f, #e67e22);
+  color: #2c3e50;
+}
+
+/* プラチナ演出（PUキャラあり） */
+.effect-platinum {
+  background: linear-gradient(to right, #bdc3c7, #ffffff);
+  color: #2c3e50;
+  box-shadow: 0 0 20px #fff;
+}
