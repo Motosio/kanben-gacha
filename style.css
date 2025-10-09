@@ -109,9 +109,8 @@ button {
 
 /* プラチナ演出（PUキャラあり） */
 .effect-platinum {
-  background: linear-gradient(to right, #bdc3c7, #ffffff);
-  color: #2c3e50;
-  box-shadow: 0 0 20px #fff;
+  background: #BEB6FF;
+  color: #111;
 }
 
 /* SR枠（青） */
