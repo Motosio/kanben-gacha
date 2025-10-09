@@ -114,6 +114,14 @@ function showResults(results) {
     setTimeout(() => {
       const el = document.createElement("div");
       el.className = "result-card";
+
+      // 枠の色を条件で追加
+      if (char.name === selectedPUCharacter) {
+        el.classList.add("glow-platinum");
+      } else if (char.rarityNum === 5) {
+        el.classList.add("glow-gold");
+      }
+
       el.innerHTML = `
         <img src="${char.img}" alt="">
         <p class="subtitle">${char.title}</p>
