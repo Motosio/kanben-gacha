@@ -8,10 +8,35 @@
 <body>
   <h1>勘弁創作キャラガチャ</h1>
 
-  <!-- 単発と10連ボタン -->
-  <button id="gacha-single">単発ガチャ</button>
-  <button id="gacha-ten">10連ガチャ</button>
-  <div id="result"></div>
+  <!-- PUキャラ選択UI -->
+  <section id="pu-selection">
+    <h2>PUキャラ選択</h2>
+    <label for="category">カテゴリ:</label>
+    <select id="category"><option value="">選択してください</option></select>
+
+    <label for="subcategory">サブカテゴリ:</label>
+    <select id="subcategory"><option value="">選択してください</option></select>
+
+    <label for="character">キャラ名:</label>
+    <select id="character"><option value="">選択してください</option></select>
+  </section>
+
+  <!-- ガチャボタン -->
+  <section id="gacha-controls">
+    <button id="gacha-single">単発ガチャ</button>
+    <button id="gacha-ten">10連ガチャ</button>
+  </section>
+
+  <!-- 演出表示 -->
+  <section id="effect-display">
+    <div id="effect" class="effect-placeholder">演出がここに表示されます</div>
+  </section>
+
+  <!-- 結果表示 -->
+  <section id="gacha-result">
+    <h2>ガチャ結果</h2>
+    <div id="result"></div>
+  </section>
 
   <script src="script.js"></script>
 </body>
