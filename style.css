@@ -128,15 +128,9 @@ button {
 
 /* PU枠（プラチナ） */
 .glow-platinum {
-  border: 2px solid white;
-  background: linear-gradient(135deg,
-    #008282 0%,   /* シアン */
-    #820082 33%,  /* マゼンタ */
-    #828200 66%,  /* イエロー */
-    #828282 100%  /* 白っぽさ */
-  );
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
-              0 0 30px rgba(0, 255, 255, 0.4),
-              0 0 30px rgba(255, 0, 255, 0.4);
-  color: #111;
+  border: 2px solid #BEB6FF;
+  box-shadow: 0 0 12px #BEB6FF;
+  background: none; /* ← 背景を他と同じく無しに */
+  color: white;
 }
+
