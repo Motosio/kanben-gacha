@@ -30,17 +30,23 @@ button {
   background: #222;
   border-radius: 12px;
   padding: 10px;
-  width: 160px;
+  width: 160px; /* 幅固定 */
+  height: calc(160px * 1.414); /* A4比率の高さ */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease;
-}
-
-.result-card:hover {
-  transform: scale(1.05);
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  overflow: hidden;
 }
 
 .result-card img {
   width: 100%;
+  height: auto;
+  max-height: 60%; /* 枠の60%までに制限 */
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -48,12 +54,14 @@ button {
   font-size: 12px;
   color: #aaa;
   margin: 5px 0 0;
+  text-align: center;
 }
 
 .result-card .name {
   font-size: 16px;
   font-weight: bold;
   margin: 2px 0 0;
+  text-align: center;
 }
 
 @keyframes pop {
