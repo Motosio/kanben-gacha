@@ -114,6 +114,12 @@ button {
   box-shadow: 0 0 20px #fff;
 }
 
+/* SR枠（青） */
+.glow-blue {
+  border: 2px solid #3498db;
+  box-shadow: 0 0 12px #3498db;
+}
+
 /* SSR枠（金） */
 .glow-gold {
   border: 2px solid gold;
