@@ -116,11 +116,13 @@ function showResults(results) {
       el.className = "result-card";
 
       // 枠の色を条件で追加
-      if (char.name === selectedPUCharacter) {
-        el.classList.add("glow-platinum");
-      } else if (char.rarityNum === 5) {
-        el.classList.add("glow-gold");
-      }
+    if (char.name === selectedPUCharacter) {
+  el.classList.add("glow-platinum");
+} else if (char.rarityNum === 5) {
+  el.classList.add("glow-gold");
+} else if (char.rarityNum === 4) {
+  el.classList.add("glow-blue");
+}
 
       el.innerHTML = `
         <img src="${char.img}" alt="">
