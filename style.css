@@ -91,3 +91,15 @@ button {
   color: #2c3e50;
   box-shadow: 0 0 20px #fff;
 }
+
+/* SSR枠（金） */
+.glow-gold {
+  border: 2px solid gold;
+  box-shadow: 0 0 12px gold;
+}
+
+/* PU枠（プラチナ） */
+.glow-platinum {
+  border: 2px solid #e5e4e2;
+  box-shadow: 0 0 12px #e5e4e2;
+}
