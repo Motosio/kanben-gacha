@@ -109,7 +109,7 @@ button {
 
 /* プラチナ演出（PUキャラあり） */
 .effect-platinum {
-  background: #BEB6FF;
+  background: linear-gradient(to right, #BEB6FF, #dcd6ff);
   color: #111;
 }
 
