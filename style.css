@@ -26,6 +26,20 @@ button {
   margin-top: 20px;
 }
 
+/* 通常時（PCなど） */
+.result-card {
+  width: 160px;
+  height: calc(160px * 1.414);
+}
+
+/* スマホ対応：画面幅が600px以下なら2列に */
+@media screen and (max-width: 600px) {
+  .result-card {
+    width: 45vw; /* 画面幅の45%くらいで2列に収まる */
+    height: calc(45vw * 1.414);
+  }
+}
+
 .result-card {
   background: #222;
   border-radius: 12px;
