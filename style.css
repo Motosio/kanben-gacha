@@ -109,6 +109,8 @@ button {
   width: 80%;
   max-width: 500px;
   transition: background 0.5s ease;
+  transition: opacity 0.4s ease;
+  opacity: 0;
 }
 
 /* 青演出（星4のみ） */
@@ -127,6 +129,7 @@ button {
 .effect-platinum {
   background: linear-gradient(to right, #BEB6FF, #dcd6ff);
   color: #111;
+  opacity: 1;
 }
 
 /* SR枠（青） */
