@@ -153,10 +153,16 @@ function showEffect(results) {
   if (hasPU) effectClass = "effect-platinum";
   else if (hasSSR) effectClass = "effect-gold";
 
-effectDiv.className = effectClass;
+  effectDiv.className = effectClass;
   effectDiv.textContent = {
     "effect-blue": "★★★★",
     "effect-gold": "★★★★★",
     "effect-platinum": "★★★★★★"
   }[effectClass];
+
+  // 🎬 フェードイン演出を追加
+  effectDiv.style.opacity = 0;
+  setTimeout(() => {
+    effectDiv.style.opacity = 1;
+  }, 50);
 }
