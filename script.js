@@ -153,6 +153,8 @@ function showEffect(results) {
   if (hasPU) effectClass = "effect-platinum";
   else if (hasSSR) effectClass = "effect-gold";
 
+  // 一旦非表示にしてからクラスとテキストを設定
+  effectDiv.style.opacity = 0;
   effectDiv.className = effectClass;
   effectDiv.textContent = {
     "effect-blue": "★★★★",
@@ -160,9 +162,9 @@ function showEffect(results) {
     "effect-platinum": "★★★★★★"
   }[effectClass];
 
-  // 🎬 フェードイン演出を追加
-  effectDiv.style.opacity = 0;
+  // 少し遅らせてフェードイン
   setTimeout(() => {
     effectDiv.style.opacity = 1;
   }, 50);
 }
+
