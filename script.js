@@ -149,8 +149,8 @@ function showEffect(results) {
 
 effectDiv.className = effectClass;
   effectDiv.textContent = {
-    "effect-blue": "青演出（星4のみ）",
-    "effect-gold": "金演出（星5あり）",
-    "effect-platinum": "プラチナ演出（PUキャラあり）"
+    "effect-blue": "★★★★",
+    "effect-gold": "★★★★★",
+    "effect-platinum": "★★★★★★"
   }[effectClass];
 }
