@@ -122,13 +122,13 @@ button {
 /* 金演出（星5あり） */
 .effect-gold {
   background: linear-gradient(to right, #f1c40f, #e67e22);
-  color: #2c3e50;
+  color: #white;
 }
 
 /* プラチナ演出（PUキャラあり） */
 .effect-platinum {
   background: linear-gradient(to right, #BEB6FF, #dcd6ff);
-  color: #111;
+  color: #white;
   opacity: 1;
 }
 
