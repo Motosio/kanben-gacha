@@ -58,11 +58,10 @@ button {
 
 .result-card img {
   width: 100%;
-  height: 100px; /* 表示領域の高さを調整 */
-  object-fit: cover;
-  object-position: top center; /* 上寄せで中央揃え */
+  height: 100px; /* 表示領域の高さ（調整可能） */
+  object-fit: cover;         /* 枠にぴったり収める */
+  object-position: top;      /* 上側を表示 */
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .result-card .subtitle {
