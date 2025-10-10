@@ -62,9 +62,6 @@ button {
   object-fit: cover;
   object-position: top;
   border-radius: 8px;
-  
-  outline: 2px solid white;
-  outline-offset: -2px; /* 枠にぴったり沿わせる */
 }
 
 
@@ -73,7 +70,13 @@ button {
   height: 120px; /* 表示領域の高さ（調整可能） */
   overflow: hidden;
   border-radius: 8px;
+  
+  padding: 3px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
 }
+
 
 .image-wrapper img {
   width: 100%;
