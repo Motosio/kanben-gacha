@@ -77,7 +77,6 @@ button {
   height: auto;
   object-fit: cover;
   object-position: top;
-  box-shadow: 0 0 0 3px white; /* ← これが白い縁取り！ */
   border-radius: 8px;
 }
 
