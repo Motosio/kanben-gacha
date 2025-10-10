@@ -74,6 +74,12 @@ function setupSelectors() {
   };
 }
 
+// ガチャボタンの有効/無効を切り替える
+function setButtonsDisabled(disabled) {
+  document.getElementById("gacha-single").disabled = disabled;
+  document.getElementById("gacha-ten").disabled = disabled;
+}
+
 // ガチャ実行
 function draw(count = 1) {
   const results = [];
@@ -122,26 +128,32 @@ function showResults(results) {
       el.className = "result-card";
 
       // 枠の色を条件で追加
-    if (char.name === selectedPUCharacter) {
-  el.classList.add("glow-platinum");
-} else if (char.rarityNum === 5) {
-  el.classList.add("glow-gold");
-} else if (char.rarityNum === 4) {
-  el.classList.add("glow-blue");
-}
+      if (char.name === selectedPUCharacter) {
+        el.classList.add("glow-platinum");
+      } else if (char.rarityNum === 5) {
+        el.classList.add("glow-gold");
+      } else if (char.rarityNum === 4) {
+        el.classList.add("glow-blue");
+      }
 
       el.innerHTML = `
-  <div class="image-wrapper">
-    <img src="${char.img}" alt="">
-  </div>
-  <p class="subtitle">${char.title}</p>
-  <p class="name">${char.name}</p>
-`;
+        <div class="image-wrapper">
+          <img src="${char.img}" alt="">
+        </div>
+        <p class="subtitle">${char.title}</p>
+        <p class="name">${char.name}</p>
+      `;
 
       resultDiv.appendChild(el);
+
+      // ✅ 最後のカードが表示されたらボタンを有効化
+      if (index === results.length - 1) {
+        setButtonsDisabled(false);
+      }
     }, index * 500);
   });
 }
+
 
 // 演出表示
 function showEffect(results) {
