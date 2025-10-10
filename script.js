@@ -82,9 +82,15 @@ function draw(count = 1) {
     const char = rollCharacter(rarity);
     if (char) results.push(char);
   }
-  showResults(results);
-  showEffect(results);
+
+  showEffect(results); // 先に演出を表示
+
+  // 0.5秒待ってから結果表示
+  setTimeout(() => {
+    showResults(results);
+  }, 500);
 }
+
 
 // レアリティ抽選
 function rollRarity() {
