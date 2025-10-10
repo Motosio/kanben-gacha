@@ -125,10 +125,13 @@ function showResults(results) {
 }
 
       el.innerHTML = `
-        <img src="${char.img}" alt="">
-        <p class="subtitle">${char.title}</p>
-        <p class="name">${char.name}</p>
-      `;
+  <div class="image-wrapper">
+    <img src="${char.img}" alt="">
+  </div>
+  <p class="subtitle">${char.title}</p>
+  <p class="name">${char.name}</p>
+`;
+
       resultDiv.appendChild(el);
     }, index * 500);
   });
