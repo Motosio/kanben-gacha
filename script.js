@@ -88,7 +88,7 @@ function draw(count = 1) {
   // 0.5秒待ってから結果表示
   setTimeout(() => {
     showResults(results);
-  }, 500);
+  }, 100);
 }
 
 
