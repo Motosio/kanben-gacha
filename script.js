@@ -95,6 +95,7 @@ function setButtonsDisabled(disabled) {
 
 // ガチャ実行
 function draw(count = 1) {
+  setButtonsDisabled(true);
   const results = [];
   for (let i = 0; i < count; i++) {
     const rarity = rollRarity();
