@@ -28,6 +28,14 @@ fetch(SHEET_URL)
     setupSelectors();
     document.getElementById("gacha-single").onclick = () => draw(1);
     document.getElementById("gacha-ten").onclick = () => draw(10);
+
+    function addAllOption(select) {
+      const optAll = document.createElement("option");
+      optAll.value = "すべて";
+      optAll.textContent = "すべて";
+      select.insertBefore(optAll, select.firstChild);
+    }
+
   })
   .catch((err) => console.error("CSV読み込み失敗:", err));
 
