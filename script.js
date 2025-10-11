@@ -35,6 +35,7 @@ function setupSelectors() {
   const categorySelect = document.getElementById("category");
   const subcategorySelect = document.getElementById("subcategory");
   const characterSelect = document.getElementById("character");
+  const authorSelect = document.getElementById("author"); // ← 追加！
 
   const categories = [...new Set(characters.map(c => c.category))];
   categories.forEach(cat => {
@@ -74,6 +75,15 @@ function setupSelectors() {
     selectedPUCharacter = characterSelect.value;
     console.log("PUキャラ:", selectedPUCharacter);
   };
+
+  // ✅ 作者セレクトの初期化（ここに追加！）
+  const authors = [...new Set(characters.map(c => c.author))];
+  authors.forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    authorSelect.appendChild(opt);
+  });
 }
 
 // ガチャボタンの有効/無効を切り替える
