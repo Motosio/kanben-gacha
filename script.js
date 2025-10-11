@@ -146,16 +146,20 @@ function rollCharacter(rarityNum) {
   const puPool = pool.filter(c => {
     const matchCategory = categorySelect.value && categorySelect.value !== "すべて" ? c.category === categorySelect.value : true;
     const matchSub = subcategorySelect.value && subcategorySelect.value !== "すべて" ? c.subcategory === subcategorySelect.value : true;
-    const matchName = characterSelect.value && characterSelect.value !== "すべて" ? c.name === characterSelect.value : true;
+    const matchName = characterSelect.value && characterSelect.value !== "すべて" && characterSelect.value !== "" ? c.name === characterSelect.value : true;
     const matchAuthor = authorSelect.value && authorSelect.value !== "すべて" ? c.author === authorSelect.value : true;
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  // PU対象が pool 全体と同じなら、PU抽選をスキップ
-  const isPUActive = puPool.length > 0 && puPool.length < pool.length;
+  // PU条件が1つでも指定されていればPU抽選を有効にする
+  const isPUActive =
+    (categorySelect.value && categorySelect.value !== "すべて") ||
+    (subcategorySelect.value && subcategorySelect.value !== "すべて") ||
+    (characterSelect.value && characterSelect.value !== "すべて" && characterSelect.value !== "") ||
+    (authorSelect.value && authorSelect.value !== "すべて");
 
   const puRate = rarityNum === 5 ? 0.5 : 0.03;
-  if (isPUActive && Math.random() < puRate) {
+  if (isPUActive && puPool.length > 0 && Math.random() < puRate) {
     return puPool[Math.floor(Math.random() * puPool.length)];
   }
 
