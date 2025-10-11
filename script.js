@@ -115,7 +115,7 @@ function setButtonsDisabled(disabled) {
 
 // ガチャ実行
 function rollRarity() {
-  return Math.random() < 0.08 ? 5 : 4;
+  return Math.random() < 0.10 ? 5 : 4;
 }
 
 function draw(count = 1) {
@@ -176,7 +176,7 @@ const onlyAuthorPU =
   characterSelect.value === "すべて";
 
 if (onlyAuthorPU) {
-  puRate = rarityNum === 5 ? 0.7 : 0.4;
+  puRate = rarityNum === 5 ? 0.7 : 0.6;
 }
 
   const nonPU = pool.filter(c => !puPool.includes(c));
