@@ -28,6 +28,10 @@ fetch(SHEET_URL)
     document.getElementById("gacha-single").onclick = () => draw(1);
     document.getElementById("gacha-ten").onclick = () => draw(10);
 
+    categorySelect.innerHTML = '';
+    subcategorySelect.innerHTML = '';
+    characterSelect.innerHTML = '';
+
     function addAllOption(select) {
       const optAll = document.createElement("option");
       optAll.value = "すべて";
