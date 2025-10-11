@@ -115,7 +115,7 @@ function setButtonsDisabled(disabled) {
 
 // ガチャ実行
 function rollRarity() {
-  return Math.random() < 0.05 ? 5 : 4;
+  return Math.random() < 0.08 ? 5 : 4;
 }
 
 function draw(count = 1) {
@@ -164,7 +164,7 @@ function rollCharacter(rarityNum) {
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  const puRate = rarityNum === 5 ? 0.5 : 0.03;
+  const puRate = rarityNum === 5 ? 0.5 : 0.1;
   if (puPool.length > 0 && Math.random() < puRate) {
     return puPool[Math.floor(Math.random() * puPool.length)];
   }
