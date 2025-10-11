@@ -43,8 +43,16 @@ function setupSelectors() {
   const categorySelect = document.getElementById("category");
   const subcategorySelect = document.getElementById("subcategory");
   const characterSelect = document.getElementById("character");
-  const authorSelect = document.getElementById("author"); // ← 追加！
+  const authorSelect = document.getElementById("author");
 
+  function addAllOption(select) {
+    const optAll = document.createElement("option");
+    optAll.value = "すべて";
+    optAll.textContent = "すべて";
+    select.insertBefore(optAll, select.firstChild);
+  }
+
+  // カテゴリ初期化
   const categories = [...new Set(characters.map(c => c.category))];
   categories.forEach(cat => {
     const opt = document.createElement("option");
@@ -52,17 +60,23 @@ function setupSelectors() {
     opt.textContent = cat;
     categorySelect.appendChild(opt);
   });
+  addAllOption(categorySelect);
 
-  // ✅ 「すべて」オプションを先頭に追加
-  const optAll = document.createElement("option");
-  optAll.value = "すべて";
-  optAll.textContent = "すべて";
-  categorySelect.insertBefore(optAll, categorySelect.firstChild);
-
-  characterSelect.onchange = () => {
-    console.log("PUキャラ:", characterSelect.value);
+  // サブカテゴリ初期化（カテゴリ変更時）
+  categorySelect.onchange = () => {
+    subcategorySelect.innerHTML = '<option value="">選択してください</option>';
+    characterSelect.innerHTML = '<option value="">選択してください</option>';
+    const subs = [...new Set(characters.filter(c => c.category === categorySelect.value).map(c => c.subcategory))];
+    subs.forEach(sub => {
+      const opt = document.createElement("option");
+      opt.value = sub;
+      opt.textContent = sub;
+      subcategorySelect.appendChild(opt);
+    });
+    addAllOption(subcategorySelect);
   };
 
+  // キャラ名初期化（サブカテゴリ変更時）
   subcategorySelect.onchange = () => {
     characterSelect.innerHTML = '<option value="">選択してください</option>';
     const chars = characters.filter(c =>
@@ -75,14 +89,10 @@ function setupSelectors() {
       opt.textContent = ch.name;
       characterSelect.appendChild(opt);
     });
+    addAllOption(characterSelect);
   };
 
-  characterSelect.onchange = () => {
-    selectedPUCharacter = characterSelect.value;
-    console.log("PUキャラ:", selectedPUCharacter);
-  };
-
-  // 作者セレクトの初期化
+  // 作者初期化
   const authors = [...new Set(characters.map(c => c.author))];
   authors.forEach(name => {
     const opt = document.createElement("option");
@@ -90,12 +100,8 @@ function setupSelectors() {
     opt.textContent = name;
     authorSelect.appendChild(opt);
   });
+  addAllOption(authorSelect);
 }
-
-addAllOption(categorySelect);
-addAllOption(subcategorySelect);
-addAllOption(characterSelect);
-addAllOption(authorSelect);
 
 // ガチャボタンの有効/無効を切り替える
 function setButtonsDisabled(disabled) {
