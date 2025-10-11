@@ -169,13 +169,15 @@ function showResults(results) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
 
+  const characterSelect = document.getElementById("character");
+
   results.forEach((char, index) => {
     setTimeout(() => {
       const el = document.createElement("div");
       el.className = "result-card";
 
-      // 枠の色を条件で追加
-      if (char.name === selectedPUCharacter) {
+      // ✅ PUキャラならプラチナ枠
+      if (characterSelect.value !== "すべて" && characterSelect.value !== "" && char.name === characterSelect.value) {
         el.classList.add("glow-platinum");
       } else if (char.rarityNum === 5) {
         el.classList.add("glow-gold");
@@ -193,13 +195,13 @@ function showResults(results) {
 
       resultDiv.appendChild(el);
 
-      // ✅ 最後のカードが表示されたらボタンを有効化
       if (index === results.length - 1) {
         setButtonsDisabled(false);
       }
     }, index * 500);
   });
 }
+
 
 
 // 演出表示
