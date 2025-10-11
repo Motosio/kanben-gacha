@@ -15,11 +15,13 @@ fetch(SHEET_URL)
         name: r[0],
         category: r[1],
         subcategory: r[2],
-        rarity: rarityNum === 5 ? "SSR" : rarityNum === 4 ? "SR" : "R",
-        rarityNum: rarityNum,
+        author: r[3], // ← 追加！
+        rarity: ...,
+        rarityNum: ...,
         title: r[5],
         img: `img/${r[0]}.png`,
       };
+
     });
 
     setupSelectors();
