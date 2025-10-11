@@ -135,7 +135,6 @@ function draw(count = 1) {
   }, 100);
 }
 
-
 // レアリティ抽選
 function rollCharacter(rarityNum) {
   const categorySelect = document.getElementById("category");
@@ -146,29 +145,31 @@ function rollCharacter(rarityNum) {
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
 
-  // PU条件に合うキャラを抽出
+  const isAllDefault =
+    categorySelect.value === "すべて" &&
+    subcategorySelect.value === "すべて" &&
+    characterSelect.value === "すべて" &&
+    authorSelect.value === "すべて";
+
+  if (isAllDefault) {
+    // 通常抽選のみ
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
   const puPool = pool.filter(c => {
-    const matchCategory = categorySelect.value && categorySelect.value !== "すべて" ? c.category === categorySelect.value : true;
-    const matchSub = subcategorySelect.value && subcategorySelect.value !== "すべて" ? c.subcategory === subcategorySelect.value : true;
-    const matchName = characterSelect.value && characterSelect.value !== "すべて" && characterSelect.value !== "" ? c.name === characterSelect.value : true;
-    const matchAuthor = authorSelect.value && authorSelect.value !== "すべて" ? c.author === authorSelect.value : true;
+    const matchCategory = categorySelect.value !== "すべて" ? c.category === categorySelect.value : true;
+    const matchSub = subcategorySelect.value !== "すべて" ? c.subcategory === subcategorySelect.value : true;
+    const matchName = characterSelect.value !== "すべて" ? c.name === characterSelect.value : true;
+    const matchAuthor = authorSelect.value !== "すべて" ? c.author === authorSelect.value : true;
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  // PU条件が1つでも指定されていればPU抽選を有効にする
-  const isPUActive =
-    (categorySelect.value && categorySelect.value !== "すべて") ||
-    (subcategorySelect.value && subcategorySelect.value !== "すべて") ||
-    (characterSelect.value && characterSelect.value !== "すべて" && characterSelect.value !== "") ||
-    (authorSelect.value && authorSelect.value !== "すべて");
-
   const puRate = rarityNum === 5 ? 0.5 : 0.03;
-  if (isPUActive && puPool.length > 0 && Math.random() < puRate) {
+  if (puPool.length > 0 && Math.random() < puRate) {
     return puPool[Math.floor(Math.random() * puPool.length)];
   }
 
-  // 通常抽選
-  const nonPU = isPUActive ? pool.filter(c => !puPool.includes(c)) : pool;
+  const nonPU = pool.filter(c => !puPool.includes(c));
   return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
 
