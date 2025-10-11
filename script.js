@@ -11,16 +11,17 @@ fetch(SHEET_URL)
 
     characters = rows.map(r => {
       const rarityNum = Number(r[4]);
-      return {
-        name: r[0],
-        category: r[1],
-        subcategory: r[2],
-        author: r[3], // ← 追加！
-        rarity: ...,
-        rarityNum: ...,
-        title: r[5],
-        img: `img/${r[0]}.png`,
-      };
+return {
+  name: r[0],
+  category: r[1],
+  subcategory: r[2],
+  author: r[3],
+  rarity: rarityNum === 5 ? "SSR" : rarityNum === 4 ? "SR" : "R",
+  rarityNum: rarityNum,
+  title: r[5],
+  img: `img/${r[0]}.png`,
+};
+
 
     });
 
