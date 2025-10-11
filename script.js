@@ -46,6 +46,12 @@ function setupSelectors() {
     categorySelect.appendChild(opt);
   });
 
+  // ✅ 「すべて」オプションを先頭に追加
+  const optAll = document.createElement("option");
+  optAll.value = "すべて";
+  optAll.textContent = "すべて";
+  categorySelect.insertBefore(optAll, categorySelect.firstChild);
+
   categorySelect.onchange = () => {
     subcategorySelect.innerHTML = '<option value="">選択してください</option>';
     characterSelect.innerHTML = '<option value="">選択してください</option>';
