@@ -100,6 +100,10 @@ function setButtonsDisabled(disabled) {
 }
 
 // ガチャ実行
+function rollRarity() {
+  return Math.random() < 0.05 ? 5 : 4;
+}
+
 function draw(count = 1) {
   setButtonsDisabled(true);
   const results = [];
