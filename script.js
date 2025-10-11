@@ -1,6 +1,5 @@
 const SHEET_URL = "characters.csv";
 let characters = [];
-let selectedPUCharacter = null;
 
 // CSV読み込みと初期化
 fetch(SHEET_URL)
@@ -60,16 +59,8 @@ function setupSelectors() {
   optAll.textContent = "すべて";
   categorySelect.insertBefore(optAll, categorySelect.firstChild);
 
-  categorySelect.onchange = () => {
-    subcategorySelect.innerHTML = '<option value="">選択してください</option>';
-    characterSelect.innerHTML = '<option value="">選択してください</option>';
-    const subs = [...new Set(characters.filter(c => c.category === categorySelect.value).map(c => c.subcategory))];
-    subs.forEach(sub => {
-      const opt = document.createElement("option");
-      opt.value = sub;
-      opt.textContent = sub;
-      subcategorySelect.appendChild(opt);
-    });
+  characterSelect.onchange = () => {
+    console.log("PUキャラ:", characterSelect.value);
   };
 
   subcategorySelect.onchange = () => {
@@ -91,7 +82,7 @@ function setupSelectors() {
     console.log("PUキャラ:", selectedPUCharacter);
   };
 
-  // ✅ 作者セレクトの初期化（ここに追加！）
+  // 作者セレクトの初期化
   const authors = [...new Set(characters.map(c => c.author))];
   authors.forEach(name => {
     const opt = document.createElement("option");
@@ -100,6 +91,11 @@ function setupSelectors() {
     authorSelect.appendChild(opt);
   });
 }
+
+addAllOption(categorySelect);
+addAllOption(subcategorySelect);
+addAllOption(characterSelect);
+addAllOption(authorSelect);
 
 // ガチャボタンの有効/無効を切り替える
 function setButtonsDisabled(disabled) {
@@ -134,25 +130,27 @@ function draw(count = 1) {
 function rollCharacter(rarityNum) {
   const categorySelect = document.getElementById("category");
   const subcategorySelect = document.getElementById("subcategory");
+  const characterSelect = document.getElementById("character");
   const authorSelect = document.getElementById("author");
+
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
-
-  // PU条件に合うキャラを抽出
+  
+//PU抽選
   const puPool = pool.filter(c => {
-    const matchName = selectedPUCharacter && selectedPUCharacter !== "すべて" ? c.name === selectedPUCharacter : true;
-    const matchCategory = categorySelect.value && categorySelect.value !== "すべて" ? c.category === categorySelect.value : true;
-    const matchSub = subcategorySelect.value && subcategorySelect.value !== "すべて" ? c.subcategory === subcategorySelect.value : true;
-    const matchAuthor = authorSelect.value && authorSelect.value !== "すべて" ? c.author === authorSelect.value : true;
-    return matchName && matchCategory && matchSub && matchAuthor;
+    const matchCategory = categorySelect.value !== "すべて" && categorySelect.value !== "" ? c.category === categorySelect.value : true;
+    const matchSub = subcategorySelect.value !== "すべて" && subcategorySelect.value !== "" ? c.subcategory === subcategorySelect.value : true;
+    const matchName = characterSelect.value !== "すべて" && characterSelect.value !== "" ? c.name === characterSelect.value : true;
+    const matchAuthor = authorSelect.value !== "すべて" && authorSelect.value !== "" ? c.author === authorSelect.value : true;
+    return matchCategory && matchSub && matchName && matchAuthor;
   });
 
   const puRate = rarityNum === 5 ? 0.5 : 0.03;
   if (puPool.length > 0 && Math.random() < puRate) {
     return puPool[Math.floor(Math.random() * puPool.length)];
   }
-
-  // 通常抽選
+  
+//通常抽選
   const nonPU = pool.filter(c => !puPool.includes(c));
   return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
