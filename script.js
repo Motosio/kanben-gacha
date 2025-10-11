@@ -205,14 +205,16 @@ function showResults(results) {
 // 演出表示
 function showEffect(results) {
   const effectDiv = document.getElementById("effect");
+  const characterSelect = document.getElementById("character");
+
   const hasSSR = results.some(c => c.rarityNum === 5);
-  const hasPU = results.some(c => c.name === selectedPUCharacter);
+  const hasPU = characterSelect.value !== "すべて" && characterSelect.value !== "" &&
+                results.some(c => c.name === characterSelect.value);
 
   let effectClass = "effect-blue";
   if (hasPU) effectClass = "effect-platinum";
   else if (hasSSR) effectClass = "effect-gold";
 
-  // 一旦非表示にしてからクラスとテキストを設定
   effectDiv.style.opacity = 0;
   effectDiv.className = effectClass;
   effectDiv.textContent = {
@@ -221,9 +223,9 @@ function showEffect(results) {
     "effect-platinum": "★★★★★★"
   }[effectClass];
 
-  // 少し遅らせてフェードイン
   setTimeout(() => {
     effectDiv.style.opacity = 1;
   }, 50);
 }
+
 
