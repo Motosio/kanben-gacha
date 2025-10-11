@@ -126,13 +126,13 @@ button:disabled {
 /* 金演出（星5あり） */
 .effect-gold {
   background: linear-gradient(to right, #f1c40f, #e67e22);
-  color: #white;
+  color: white;
 }
 
 /* プラチナ演出（PUキャラあり） */
 .effect-platinum {
   background: linear-gradient(to right, #BEB6FF, #dcd6ff);
-  color: #white;
+  color: white;
 }
 
 /* SR枠（青） */
