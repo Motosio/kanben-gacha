@@ -164,10 +164,20 @@ function rollCharacter(rarityNum) {
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  const puRate = rarityNum === 5 ? 0.5 : 0.1;
-  if (puPool.length > 0 && Math.random() < puRate) {
-    return puPool[Math.floor(Math.random() * puPool.length)];
-  }
+  // PU抽選確率の設定
+let puRate = 0.1; // デフォルト：星4は10%
+if (rarityNum === 5) puRate = 0.5; // デフォルト：星5は50%
+
+// 作者名のみ指定されている場合は確率アップ
+const onlyAuthorPU =
+  authorSelect.value !== "すべて" &&
+  categorySelect.value === "すべて" &&
+  subcategorySelect.value === "すべて" &&
+  characterSelect.value === "すべて";
+
+if (onlyAuthorPU) {
+  puRate = rarityNum === 5 ? 0.7 : 0.4;
+}
 
   const nonPU = pool.filter(c => !puPool.includes(c));
   return nonPU[Math.floor(Math.random() * nonPU.length)];
