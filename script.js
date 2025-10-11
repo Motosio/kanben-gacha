@@ -111,21 +111,26 @@ function draw(count = 1) {
 
 
 // レアリティ抽選
-function rollRarity() {
-  return Math.random() < 0.05 ? 5 : 4;
-}
-
-// キャラ抽選（PU補正あり）
 function rollCharacter(rarityNum) {
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
 
-  const puChar = pool.find(c => c.name === selectedPUCharacter);
+  // PU条件に合うキャラを抽出
+  const puPool = pool.filter(c => {
+    const matchName = selectedPUCharacter && selectedPUCharacter !== "すべて" ? c.name === selectedPUCharacter : true;
+    const matchCategory = categorySelect.value && categorySelect.value !== "すべて" ? c.category === categorySelect.value : true;
+    const matchSub = subcategorySelect.value && subcategorySelect.value !== "すべて" ? c.subcategory === subcategorySelect.value : true;
+    const matchAuthor = authorSelect.value && authorSelect.value !== "すべて" ? c.author === authorSelect.value : true;
+    return matchName && matchCategory && matchSub && matchAuthor;
+  });
+
   const puRate = rarityNum === 5 ? 0.5 : 0.03;
+  if (puPool.length > 0 && Math.random() < puRate) {
+    return puPool[Math.floor(Math.random() * puPool.length)];
+  }
 
-  if (puChar && Math.random() < puRate) return puChar;
-
-  const nonPU = pool.filter(c => c.name !== selectedPUCharacter);
+  // 通常抽選
+  const nonPU = pool.filter(c => !puPool.includes(c));
   return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
 
