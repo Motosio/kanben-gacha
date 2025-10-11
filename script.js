@@ -113,6 +113,9 @@ function draw(count = 1) {
 
 // レアリティ抽選
 function rollCharacter(rarityNum) {
+  const categorySelect = document.getElementById("category");
+  const subcategorySelect = document.getElementById("subcategory");
+  const authorSelect = document.getElementById("author");
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
 
