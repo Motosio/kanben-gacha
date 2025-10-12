@@ -33,10 +33,10 @@ fetch(SHEET_URL)
     characterSelect.innerHTML = '';
 
     function addAllOption(select) {
-      const optAll = document.createElement("option");
-      optAll.value = "すべて";
-      optAll.textContent = "すべて";
-      select.insertBefore(optAll, select.firstChild);
+      const opt = document.createElement("option");
+      opt.value = "すべて";
+      opt.textContent = "すべて";
+      select.appendChild(opt);
     }
 
   })
@@ -80,6 +80,65 @@ function setupSelectors() {
     addAllOption(subcategorySelect);
   };
 
+  categorySelect.onchange = () => {
+  subcategorySelect.innerHTML = '';
+  characterSelect.innerHTML = '';
+  authorSelect.innerHTML = '';
+
+  addAllOption(subcategorySelect);
+  addAllOption(characterSelect);
+  addAllOption(authorSelect);
+
+  const filtered = characters.filter(c => categorySelect.value === "すべて" || c.category === categorySelect.value);
+
+  const subs = [...new Set(filtered.map(c => c.subcategory))];
+  subs.forEach(sub => {
+    const opt = document.createElement("option");
+    opt.value = sub;
+    opt.textContent = sub;
+    subcategorySelect.appendChild(opt);
+  });
+
+  const authors = [...new Set(filtered.map(c => c.author))];
+  authors.forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    authorSelect.appendChild(opt);
+  });
+};
+
+  //作者候補絞り込み(カテゴリ･サブカテゴリ選択時)
+  subcategorySelect.onchange = () => {
+    characterSelect.innerHTML = '';
+    authorSelect.innerHTML = '';
+
+    addAllOption(characterSelect);
+    addAllOption(authorSelect);
+
+    const filtered = characters.filter(c =>
+      (categorySelect.value === "すべて" || c.category === categorySelect.value) &&
+      (subcategorySelect.value === "すべて" || c.subcategory === subcategorySelect.value)
+    );
+
+    const chars = [...new Set(filtered.map(c => c.name))];
+    chars.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      characterSelect.appendChild(opt);
+    });
+
+  
+    const authors = [...new Set(filtered.map(c => c.author))];
+    authors.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      authorSelect.appendChild(opt);
+    });
+  };
+
   // キャラ名初期化（サブカテゴリ変更時）
   subcategorySelect.onchange = () => {
     characterSelect.innerHTML = '<option value="">選択してください</option>';
@@ -95,6 +154,16 @@ function setupSelectors() {
     });
     addAllOption(characterSelect);
   };
+
+  // 作者初期化(キャラ名選択時)
+  characterSelect.onchange = () => {
+  if (characterSelect.value !== "すべて") {
+    authorSelect.value = "すべて";
+    authorSelect.disabled = true;
+  } else {
+    authorSelect.disabled = false;
+  }
+};
 
   // 作者初期化
   const authors = [...new Set(characters.map(c => c.author))];
