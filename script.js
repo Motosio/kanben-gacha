@@ -1,15 +1,14 @@
 const SHEET_URL = "characters.csv";
 let characters = [];
 
-// CSV読み込みと初期化
 fetch(SHEET_URL)
   .then(res => res.text())
   .then(text => {
     const rows = text.trim().split("\n").map(r => r.split(","));
-    rows.shift(); // ヘッダー削除
+    rows.shift();
 
     characters = rows.map(r => {
-      const rarityNum = Number(r[4])
+      const rarityNum = Number(r[4]);
       return {
         name: r[0],
         category: r[1],
@@ -25,35 +24,9 @@ fetch(SHEET_URL)
     setupSelectors();
     document.getElementById("gacha-single").onclick = () => draw(1);
     document.getElementById("gacha-ten").onclick = () => draw(10);
-
-    categorySelect.innerHTML = '';
-    subcategorySelect.innerHTML = '';
-    characterSelect.innerHTML = '';
-
-    function addAllOption(select) {
-      const opt = document.createElement("option");
-      opt.value = "すべて";
-      opt.textContent = "すべて";
-      select.appendChild(opt);
-    }
-
-    // 初期状態で「すべて」だけ表示
-    subcategorySelect.innerHTML = '';
-    characterSelect.innerHTML = '';
-    authorSelect.innerHTML = '';
-
-    addAllOption(subcategorySelect);
-    addAllOption(characterSelect);
-    addAllOption(authorSelect);
-
-    // カテゴリが「すべて」なら他セレクトを無効化
-    subcategorySelect.disabled = true;
-    characterSelect.disabled = true;
-
   })
   .catch((err) => console.error("CSV読み込み失敗:", err));
 
-// PU選択UIの初期化
 function setupSelectors() {
   const categorySelect = document.getElementById("category");
   const subcategorySelect = document.getElementById("subcategory");
@@ -61,13 +34,27 @@ function setupSelectors() {
   const authorSelect = document.getElementById("author");
 
   function addAllOption(select) {
-    const optAll = document.createElement("option");
-    optAll.value = "すべて";
-    optAll.textContent = "すべて";
-    select.insertBefore(optAll, select.firstChild);
+    const opt = document.createElement("option");
+    opt.value = "すべて";
+    opt.textContent = "すべて";
+    select.appendChild(opt);
   }
 
-  // カテゴリ初期化
+  // 初期化
+  categorySelect.innerHTML = '';
+  subcategorySelect.innerHTML = '';
+  characterSelect.innerHTML = '';
+  authorSelect.innerHTML = '';
+
+  addAllOption(categorySelect);
+  addAllOption(subcategorySelect);
+  addAllOption(characterSelect);
+  addAllOption(authorSelect);
+
+  subcategorySelect.disabled = true;
+  characterSelect.disabled = true;
+
+  // カテゴリ追加
   const categories = [...new Set(characters.map(c => c.category))];
   categories.forEach(cat => {
     const opt = document.createElement("option");
@@ -75,9 +62,7 @@ function setupSelectors() {
     opt.textContent = cat;
     categorySelect.appendChild(opt);
   });
-  addAllOption(categorySelect);
 
-  // サブカテゴリ初期化（カテゴリ変更時）
   categorySelect.onchange = () => {
     subcategorySelect.innerHTML = '';
     characterSelect.innerHTML = '';
@@ -109,7 +94,7 @@ function setupSelectors() {
 
     if (categorySelect.value === "すべて") {
       subcategorySelect.innerHTML = '';
-      characterSelect.innerHTML = '';  
+      characterSelect.innerHTML = '';
       addAllOption(subcategorySelect);
       addAllOption(characterSelect);
       subcategorySelect.disabled = true;
@@ -120,49 +105,44 @@ function setupSelectors() {
     }
   };
 
-  //作者候補絞り込み･キャラ名初期化(サブカテゴリ選択時)
   subcategorySelect.onchange = () => {
     characterSelect.innerHTML = '';
     authorSelect.innerHTML = '';
-  
+
     addAllOption(characterSelect);
     addAllOption(authorSelect);
 
-  
-    const filtered = characters.filter(c =>    
-      (categorySelect.value === "すべて" || c.category === categorySelect.value) && 
+    const filtered = characters.filter(c =>
+      (categorySelect.value === "すべて" || c.category === categorySelect.value) &&
       (subcategorySelect.value === "すべて" || c.subcategory === subcategorySelect.value)
     );
 
- 
-    const chars = [...new Set(filtered.map(c => c.name))]; 
-    chars.forEach(ch => {   
-      const opt = document.createElement("option");   
-      opt.value = ch.name;   
-      opt.textContent = ch.name;  
+    const chars = [...new Set(filtered.map(c => c.name))];
+    chars.forEach(ch => {
+      const opt = document.createElement("option");
+      opt.value = ch.name;
+      opt.textContent = ch.name;
       characterSelect.appendChild(opt);
     });
-  
-    const authors = [...new Set(filtered.map(c => c.author))]; 
-    authors.forEach(name => {   
-      const opt = document.createElement("option");   
-      opt.value = name;   
-      opt.textContent = name;  
+
+    const authors = [...new Set(filtered.map(c => c.author))];
+    authors.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
       authorSelect.appendChild(opt);
     });
   };
 
-  // 作者初期化(キャラ名選択時)
   characterSelect.onchange = () => {
-  if (characterSelect.value !== "すべて") {
-    authorSelect.value = "すべて";
-    authorSelect.disabled = true;
-  } else {
-    authorSelect.disabled = false;
-  }
-};
+    if (characterSelect.value !== "すべて") {
+      authorSelect.value = "すべて";
+      authorSelect.disabled = true;
+    } else {
+      authorSelect.disabled = false;
+    }
+  };
 
-  // 作者初期化
   const authors = [...new Set(characters.map(c => c.author))];
   authors.forEach(name => {
     const opt = document.createElement("option");
@@ -170,16 +150,13 @@ function setupSelectors() {
     opt.textContent = name;
     authorSelect.appendChild(opt);
   });
-  addAllOption(authorSelect);
 }
 
-// ガチャボタンの有効/無効を切り替える
 function setButtonsDisabled(disabled) {
   document.getElementById("gacha-single").disabled = disabled;
   document.getElementById("gacha-ten").disabled = disabled;
 }
 
-// ガチャ実行
 function rollRarity() {
   return Math.random() < 0.10 ? 5 : 4;
 }
@@ -193,15 +170,12 @@ function draw(count = 1) {
     if (char) results.push(char);
   }
 
-  showEffect(results); // 先に演出を表示
-
-  // 0.5秒待ってから結果表示
+  showEffect(results);
   setTimeout(() => {
     showResults(results);
   }, 100);
 }
 
-// レアリティ抽選
 function rollCharacter(rarityNum) {
   const categorySelect = document.getElementById("category");
   const subcategorySelect = document.getElementById("subcategory");
@@ -211,7 +185,6 @@ function rollCharacter(rarityNum) {
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
 
-  //通常抽選
   const isAllDefault =
     categorySelect.value === "すべて" &&
     subcategorySelect.value === "すべて" &&
@@ -245,7 +218,7 @@ function rollCharacter(rarityNum) {
     authorSelect.value === "すべて";
 
   const categoryAndSubPU =
-  categorySelect.value !== "すべて" &&
+    categorySelect.value !== "すべて" &&
     subcategorySelect.value !== "すべて" &&
     characterSelect.value === "すべて" &&
     authorSelect.value === "すべて";
@@ -258,10 +231,14 @@ function rollCharacter(rarityNum) {
     puRate = rarityNum === 5 ? 0.7 : 0.55;
   }
 
+  if (puPool.length > 0 && Math.random() < puRate) {
+    return puPool[Math.floor(Math.random() * puPool.length)];
+  }
+
+  const nonPU = pool.filter(c => !puPool.includes(c));
+  return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
 
-
-// 結果表示
 function showResults(results) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
@@ -273,7 +250,7 @@ function showResults(results) {
       const el = document.createElement("div");
       el.className = "result-card";
 
-      // ✅ PUキャラならプラチナ枠
+      // キャラ名PU指定ならプラチナ枠
       if (characterSelect.value !== "すべて" && characterSelect.value !== "" && char.name === characterSelect.value) {
         el.classList.add("glow-platinum");
       } else if (char.rarityNum === 5) {
@@ -299,9 +276,6 @@ function showResults(results) {
   });
 }
 
-
-
-// 演出表示
 function showEffect(results) {
   const effectDiv = document.getElementById("effect");
   const characterSelect = document.getElementById("character");
@@ -326,4 +300,3 @@ function showEffect(results) {
     effectDiv.style.opacity = 1;
   }, 50);
 }
-
