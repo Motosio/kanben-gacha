@@ -20,8 +20,6 @@ fetch(SHEET_URL)
         title: r[5],
         img: `img/${r[0]}.png`,
       };
-
-
     });
 
     setupSelectors();
