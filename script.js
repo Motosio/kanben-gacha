@@ -68,8 +68,8 @@ function setupSelectors() {
 
   // サブカテゴリ初期化（カテゴリ変更時）
   categorySelect.onchange = () => {
-    subcategorySelect.innerHTML = '<option value="">選択してください</option>';
-    characterSelect.innerHTML = '<option value="">選択してください</option>';
+    subcategorySelect.innerHTML = '<option value="">すべて</option>';
+    characterSelect.innerHTML = '<option value="">すべて</option>';
     const subs = [...new Set(characters.filter(c => c.category === categorySelect.value).map(c => c.subcategory))];
     subs.forEach(sub => {
       const opt = document.createElement("option");
