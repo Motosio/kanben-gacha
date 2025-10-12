@@ -67,46 +67,37 @@ function setupSelectors() {
   addAllOption(categorySelect);
 
   // サブカテゴリ初期化（カテゴリ変更時）
+
   categorySelect.onchange = () => {
-    subcategorySelect.innerHTML = '<option value="">すべて</option>';
-    characterSelect.innerHTML = '<option value="">すべて</option>';
-    const subs = [...new Set(characters.filter(c => c.category === categorySelect.value).map(c => c.subcategory))];
+    subcategorySelect.innerHTML = '';
+    characterSelect.innerHTML = '';
+    authorSelect.innerHTML = '';
+
+    addAllOption(subcategorySelect);
+    addAllOption(characterSelect);
+    addAllOption(authorSelect);
+
+    const filtered = characters.filter(c =>
+      categorySelect.value === "すべて" || c.category === categorySelect.value
+    );
+
+    const subs = [...new Set(filtered.map(c => c.subcategory))];
     subs.forEach(sub => {
       const opt = document.createElement("option");
       opt.value = sub;
       opt.textContent = sub;
       subcategorySelect.appendChild(opt);
     });
-    addAllOption(subcategorySelect);
+
+    const authors = [...new Set(filtered.map(c => c.author))];
+    authors.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      authorSelect.appendChild(opt);
+    });
   };
 
-  categorySelect.onchange = () => {
-  subcategorySelect.innerHTML = '';
-  characterSelect.innerHTML = '';
-  authorSelect.innerHTML = '';
-
-  addAllOption(subcategorySelect);
-  addAllOption(characterSelect);
-  addAllOption(authorSelect);
-
-  const filtered = characters.filter(c => categorySelect.value === "すべて" || c.category === categorySelect.value);
-
-  const subs = [...new Set(filtered.map(c => c.subcategory))];
-  subs.forEach(sub => {
-    const opt = document.createElement("option");
-    opt.value = sub;
-    opt.textContent = sub;
-    subcategorySelect.appendChild(opt);
-  });
-
-  const authors = [...new Set(filtered.map(c => c.author))];
-  authors.forEach(name => {
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.textContent = name;
-    authorSelect.appendChild(opt);
-  });
-};
 
   //作者候補絞り込み(カテゴリ･サブカテゴリ選択時)
   subcategorySelect.onchange = () => {
@@ -321,5 +312,4 @@ function showEffect(results) {
     effectDiv.style.opacity = 1;
   }, 50);
 }
-
 
