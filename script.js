@@ -67,7 +67,6 @@ function setupSelectors() {
   addAllOption(categorySelect);
 
   // サブカテゴリ初期化（カテゴリ変更時）
-
   categorySelect.onchange = () => {
     subcategorySelect.innerHTML = '';
     characterSelect.innerHTML = '';
@@ -98,52 +97,36 @@ function setupSelectors() {
     });
   };
 
-
-  //作者候補絞り込み(カテゴリ･サブカテゴリ選択時)
+  //作者候補絞り込み･キャラ名初期化(サブカテゴリ選択時)
   subcategorySelect.onchange = () => {
     characterSelect.innerHTML = '';
     authorSelect.innerHTML = '';
-
+  
     addAllOption(characterSelect);
     addAllOption(authorSelect);
 
-    const filtered = characters.filter(c =>
-      (categorySelect.value === "すべて" || c.category === categorySelect.value) &&
+  
+    const filtered = characters.filter(c =>    
+      (categorySelect.value === "すべて" || c.category === categorySelect.value) && 
       (subcategorySelect.value === "すべて" || c.subcategory === subcategorySelect.value)
     );
 
-    const chars = [...new Set(filtered.map(c => c.name))];
-    chars.forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
+ 
+    const chars = [...new Set(filtered.map(c => c.name))]; 
+    chars.forEach(ch => {   
+      const opt = document.createElement("option");   
+      opt.value = ch.name;   
+      opt.textContent = ch.name;  
       characterSelect.appendChild(opt);
     });
-
   
-    const authors = [...new Set(filtered.map(c => c.author))];
-    authors.forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
+    const authors = [...new Set(filtered.map(c => c.author))]; 
+    authors.forEach(name => {   
+      const opt = document.createElement("option");   
+      opt.value = name;   
+      opt.textContent = name;  
       authorSelect.appendChild(opt);
     });
-  };
-
-  // キャラ名初期化（サブカテゴリ変更時）
-  subcategorySelect.onchange = () => {
-    characterSelect.innerHTML = '<option value="">選択してください</option>';
-    const chars = characters.filter(c =>
-      c.category === categorySelect.value &&
-      c.subcategory === subcategorySelect.value
-    );
-    chars.forEach(ch => {
-      const opt = document.createElement("option");
-      opt.value = ch.name;
-      opt.textContent = ch.name;
-      characterSelect.appendChild(opt);
-    });
-    addAllOption(characterSelect);
   };
 
   // 作者初期化(キャラ名選択時)
