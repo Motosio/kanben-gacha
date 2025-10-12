@@ -118,11 +118,13 @@ function setupSelectors() {
     );
 
     const chars = [...new Set(filtered.map(c => c.name))];
-    chars.forEach(ch => {
-      const opt = document.createElement("option");
-      opt.value = ch.name;
-      opt.textContent = ch.name;
-      characterSelect.appendChild(opt);
+    chars.forEach(name => {
+      if (name && name.trim() !== "") {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        characterSelect.appendChild(opt);
+      }
     });
 
     const authors = [...new Set(filtered.map(c => c.author))];
