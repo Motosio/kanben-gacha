@@ -96,6 +96,18 @@ function setupSelectors() {
       opt.textContent = name;
       authorSelect.appendChild(opt);
     });
+
+    if (categorySelect.value === "すべて") {
+      subcategorySelect.innerHTML = '';
+      characterSelect.innerHTML = '';  
+      addAllOption(subcategorySelect);
+      addAllOption(characterSelect);
+      subcategorySelect.disabled = true;
+      characterSelect.disabled = true;
+    } else {
+      subcategorySelect.disabled = false;
+      characterSelect.disabled = false;
+    }
   };
 
   //作者候補絞り込み･キャラ名初期化(サブカテゴリ選択時)
