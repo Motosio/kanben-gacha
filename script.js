@@ -37,8 +37,18 @@ fetch(SHEET_URL)
       select.appendChild(opt);
     }
 
+    // 初期状態で「すべて」だけ表示
+    subcategorySelect.innerHTML = '';
+    characterSelect.innerHTML = '';
+    authorSelect.innerHTML = '';
+
     addAllOption(subcategorySelect);
     addAllOption(characterSelect);
+    addAllOption(authorSelect);
+
+    // カテゴリが「すべて」なら他セレクトを無効化
+    subcategorySelect.disabled = true;
+    characterSelect.disabled = true;
 
   })
   .catch((err) => console.error("CSV読み込み失敗:", err));
@@ -220,12 +230,7 @@ function rollCharacter(rarityNum) {
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  let puRate = 0.1;
-  if (rarityNum === 5) puRate = 0.5;
-
-  //PU確率アップ分岐
-  let puRate = 0.1;
-  if (rarityNum === 5) puRate = 0.5;
+  let puRate = rarityNum === 5 ? 0.5 : 0.1;
 
   const onlyAuthorPU =
     authorSelect.value !== "すべて" &&
