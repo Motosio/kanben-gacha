@@ -214,6 +214,7 @@ function rollCharacter(rarityNum) {
   const pool = characters.filter(c => c.rarityNum === rarityNum);
   if (pool.length === 0) return null;
 
+  //通常抽選
   const isAllDefault =
     categorySelect.value === "すべて" &&
     subcategorySelect.value === "すべて" &&
@@ -221,7 +222,6 @@ function rollCharacter(rarityNum) {
     authorSelect.value === "すべて";
 
   if (isAllDefault) {
-    // 通常抽選のみ
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
@@ -233,24 +233,28 @@ function rollCharacter(rarityNum) {
     return matchCategory && matchSub && matchName && matchAuthor;
   });
 
-  // PU抽選確率の設定
-let puRate = 0.1; // デフォルト：星4は10%
-if (rarityNum === 5) puRate = 0.5; // デフォルト：星5は50%
+  let puRate = 0.1;
+  if (rarityNum === 5) puRate = 0.5;
 
-// 作者名のみ指定されている場合は確率アップ
-const onlyAuthorPU =
-  authorSelect.value !== "すべて" &&
-  categorySelect.value === "すべて" &&
-  subcategorySelect.value === "すべて" &&
-  characterSelect.value === "すべて";
+  //作者名のみPUのとき確率アップ
+  const onlyAuthorPU =
+    authorSelect.value !== "すべて" &&
+    categorySelect.value === "すべて" &&
+    subcategorySelect.value === "すべて" &&
+    characterSelect.value === "すべて";
 
-if (onlyAuthorPU) {
-  puRate = rarityNum === 5 ? 0.7 : 0.6;
-}
+  if (onlyAuthorPU) {
+    puRate = rarityNum === 5 ? 0.7 : 0.4;
+  }
+
+  if (puPool.length > 0 && Math.random() < puRate) {
+    return puPool[Math.floor(Math.random() * puPool.length)];
+  }
 
   const nonPU = pool.filter(c => !puPool.includes(c));
   return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
+
 
 // 結果表示
 function showResults(results) {
