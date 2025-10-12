@@ -246,11 +246,11 @@ function rollCharacter(rarityNum) {
     authorSelect.value === "すべて";
 
   if (onlyAuthorPU) {
-    puRate = rarityNum === 5 ? 0.7 : 0.4;
+    puRate = rarityNum === 5 ? 0.8 : 0.6;
   } else if (onlyCategoryPU) {
-    puRate = rarityNum === 5 ? 0.6 : 0.3;
+    puRate = rarityNum === 5 ? 0.8 : 0.6;
   } else if (categoryAndSubPU) {
-    puRate = rarityNum === 5 ? 0.55 : 0.2;
+    puRate = rarityNum === 5 ? 0.7 : 0.55;
   }
 
 }
