@@ -37,6 +37,9 @@ fetch(SHEET_URL)
       select.appendChild(opt);
     }
 
+    addAllOption(subcategorySelect);
+    addAllOption(characterSelect);
+
   })
   .catch((err) => console.error("CSV読み込み失敗:", err));
 
