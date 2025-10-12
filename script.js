@@ -223,23 +223,36 @@ function rollCharacter(rarityNum) {
   let puRate = 0.1;
   if (rarityNum === 5) puRate = 0.5;
 
-  //作者名のみPUのとき確率アップ
+  //PU確率アップ分岐
+  let puRate = 0.1;
+  if (rarityNum === 5) puRate = 0.5;
+
   const onlyAuthorPU =
     authorSelect.value !== "すべて" &&
     categorySelect.value === "すべて" &&
     subcategorySelect.value === "すべて" &&
     characterSelect.value === "すべて";
 
+  const onlyCategoryPU =
+    categorySelect.value !== "すべて" &&
+    subcategorySelect.value === "すべて" &&
+    characterSelect.value === "すべて" &&
+    authorSelect.value === "すべて";
+
+  const categoryAndSubPU =
+  categorySelect.value !== "すべて" &&
+    subcategorySelect.value !== "すべて" &&
+    characterSelect.value === "すべて" &&
+    authorSelect.value === "すべて";
+
   if (onlyAuthorPU) {
     puRate = rarityNum === 5 ? 0.7 : 0.4;
+  } else if (onlyCategoryPU) {
+    puRate = rarityNum === 5 ? 0.6 : 0.3;
+  } else if (categoryAndSubPU) {
+    puRate = rarityNum === 5 ? 0.55 : 0.2;
   }
 
-  if (puPool.length > 0 && Math.random() < puRate) {
-    return puPool[Math.floor(Math.random() * puPool.length)];
-  }
-
-  const nonPU = pool.filter(c => !puPool.includes(c));
-  return nonPU[Math.floor(Math.random() * nonPU.length)];
 }
 
 
